@@ -1,0 +1,40 @@
+const { _electron: electron } = require('playwright');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+(async () => {
+  const root = path.join(__dirname, '..'), env = { ...process.env }; delete env.ELECTRON_RUN_AS_NODE;
+  const profile = `packaged-${Date.now()}`, directory = path.resolve(process.argv[2] || path.join(root, 'dist', 'win-unpacked'));
+  env.PATH = path.join(process.env.SystemRoot || 'C:/Windows', 'System32');
+  delete env.NODE_OPTIONS; delete env.PORTABLE_EXECUTABLE_FILE;
+  const app = await electron.launch({ executablePath: path.join(directory, 'Task Reminder.exe'), args: ['--test-mode', `--test-profile=${profile}`], env });
+  try {
+    const page = await app.firstWindow(), errors = []; page.on('pageerror', e => errors.push(e.message));
+    await page.waitForFunction(() => document.querySelector('#dashboard-progress-note')?.textContent.length > 0);
+    assert.equal(await app.evaluate(({ app }) => app.getVersion()), require('../package.json').version);
+    await page.click('#dashboard-add'); await page.fill('#daily-title', 'Kiểm tra bản đóng gói'); await page.click('#daily-save');
+    await page.waitForSelector('#daily-editor', { state: 'hidden' });
+    assert.equal(await page.textContent('#stat-total'), '1');
+    const saved = await page.evaluate(() => window.reminder.getState());
+    assert.equal(saved.dailyTasks.length, 1); assert.equal(saved.packaged, true);
+    assert.equal(await page.evaluate(() => { document.querySelector('[data-view="daily"]').click(); return document.querySelector('#daily-view').getAnimations().some(a => a.effect.getTiming().duration === 160); }), true);
+    await page.click('[data-view="all"]');
+    await page.evaluate(() => window.reminder.settings({ sound: false }));
+    const opened = app.waitForEvent('window'); await page.click('#preview'); const popup = await opened;
+    await popup.waitForFunction(() => document.querySelector('#popup-title')?.textContent.length > 0);
+    assert.equal(await popup.locator('.reminder-visual').evaluate(el => getComputedStyle(el).clipPath), 'none', 'content is never masked for a two-second entrance');
+    assert.ok(await popup.locator('.reminder-visual').evaluate(el => el.getAnimations().every(a => a.effect.getTiming().duration <= 180)));
+    const closed = popup.waitForEvent('close'); await popup.locator('#dismiss-slider').focus(); await popup.keyboard.press('End'); await closed;
+    await app.evaluate(({ BrowserWindow }) => new Promise(resolve => { const win = BrowserWindow.getAllWindows()[0]; win.once('hide', resolve); win.close(); }));
+    assert.equal(await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].isVisible()), false);
+    await app.evaluate(({ BrowserWindow }) => { const win = BrowserWindow.getAllWindows()[0]; win.show(); win.focus(); });
+    await page.waitForTimeout(180);
+    assert.equal(await page.locator('.app-shell').evaluate(el => getComputedStyle(el).opacity), '1');
+    await page.evaluate(() => window.reminder.settings({ reducedMotion: true }));
+    await page.waitForSelector('body.reduce-motion');
+    assert.equal(await page.evaluate(() => { document.querySelector('[data-view="dashboard"]').click(); return document.querySelector('#dashboard-view').getAnimations().length; }), 0);
+    assert.deepEqual(errors, []);
+    fs.writeFileSync(path.join(root, 'design-previews', 'packaged-verification.json'), JSON.stringify({ passed: true, checkedAt: new Date().toISOString(), version: require('../package.json').version, checks: ['packaged launch with Windows-only PATH', 'dashboard', 'daily task save', 'isolated profile', 'tab motion', 'popup visible without two-second masking', 'slider dismissal', 'window hide and reopen', 'reduced motion'], errors }, null, 2));
+    console.log('PASS: packaged runtime, daily tasks, immediate popup, motion, hide/reopen, reduced motion.');
+  } finally { await app.close(); fs.rmSync(path.join(directory, '.test-data', profile), { recursive: true, force: true, maxRetries: 5, retryDelay: 200 }); }
+})().catch(error => { console.error(error); process.exitCode = 1; });

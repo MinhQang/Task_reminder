@@ -1,0 +1,21 @@
+node_modules/
+release/
+release-*/
+dist/
+.test-data/
+design-references/**/.git/
+*.log
+
+# Local design reference clones (linked from README instead)
+design-references/
+# Machine-specific test reports
+design-previews/*-verification.json
+design-previews/verification.json
+design-previews/cleanup-report.json
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+Thumbs.db
+Desktop.ini

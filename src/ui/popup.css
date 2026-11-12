@@ -1,0 +1,33 @@
+﻿/* Popup shares the cream, forest, type and shape tokens of the manager window. */
+html,body.popup-body{margin:0;width:100%;height:100%;background:transparent;overflow:hidden}
+.popup-stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;isolation:isolate;opacity:0}
+.screen-dimmer{position:absolute;inset:0;background:rgba(4,10,16,.7);z-index:-1;will-change:opacity}
+.popup-main{width:min(660px,calc(100vw - 32px));height:min(440px,calc(100vh - 32px));flex:none;padding:0;overflow:visible;position:relative}
+.reminder-visual{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:30px 36px 126px;background:var(--cream);border:1px solid #dce7d7;border-radius:24px;box-shadow:0 20px 80px #10281b40;will-change:clip-path,transform;overflow:hidden}
+.floating-reminder{position:relative;width:100%;text-align:center}
+.reminder-bell{display:grid;place-items:center;margin:0 auto 16px;width:52px;height:52px;border-radius:18px;background:var(--mint);color:var(--forest)}
+.reminder-bell svg{width:27px;height:27px}
+.reminder-eyebrow{font-size:9px;font-weight:600;letter-spacing:1.5px;color:var(--muted);margin-bottom:12px}
+.task-line{padding:0 12px;max-width:100%}
+#popup-title{font-size:30px;font-weight:600;line-height:1.35;letter-spacing:-.7px;color:var(--ink);overflow-wrap:anywhere;white-space:pre-wrap;max-height:122px;overflow-y:auto;text-wrap:balance}
+.dismiss-control{position:absolute;bottom:42px;left:50%;transform:translateX(-50%);width:300px;max-width:75%;margin:0;color:var(--forest);text-align:center;will-change:opacity}
+.dismiss-rail{position:relative;display:flex;align-items:center;gap:0;height:44px}
+.dismiss-rail::before{content:"";position:absolute;left:7px;right:7px;top:calc(50% - 3px);height:6px;background:linear-gradient(90deg,var(--forest) var(--slide-percent,0%),#d6e2d0 var(--slide-percent,0%));border-radius:6px;pointer-events:none}
+.rail-star{position:relative;width:14px;height:14px;flex-shrink:0;fill:var(--forest)}
+#dismiss-slider{position:relative;z-index:1;appearance:none;-webkit-appearance:none;flex:1;min-width:0;width:100%;height:44px;margin:0;background:transparent;cursor:grab;touch-action:none;-webkit-app-region:no-drag}
+#dismiss-slider:active{cursor:grabbing}
+#dismiss-slider::-webkit-slider-runnable-track{height:6px;border-radius:6px;background:transparent}
+#dismiss-slider::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:26px;height:26px;margin-top:-10px;border:2px solid var(--forest);background:var(--white);border-radius:50%;box-shadow:0 2px 5px #234d3526;transition:box-shadow 150ms}
+#dismiss-slider:hover::-webkit-slider-thumb{box-shadow:0 0 0 5px #28574714}
+#dismiss-slider:focus-visible{outline:2px solid var(--forest);outline-offset:4px;border-radius:10px}
+#dismiss-slider:disabled{opacity:.6;cursor:wait}
+#slider-hint{display:block;color:var(--muted);font-size:11px;letter-spacing:.2px;margin-top:8px}
+#popup-note,#missed-note,#popup-error{font-size:13px;line-height:1.65;color:var(--muted);margin:12px 24px 0;overflow-wrap:anywhere;max-height:44px;overflow-y:auto}
+#missed-note{font-size:11px;margin-top:8px;color:var(--amber)}
+#popup-error{position:absolute;bottom:8px;left:0;right:0;text-align:center;color:var(--error);font-size:11px}
+.signal-noise{position:absolute;top:0;bottom:0;width:7%;pointer-events:none;opacity:0;z-index:3;background:repeating-linear-gradient(0deg,transparent 0 5px,#699784aa 5px 6px,transparent 6px 13px,#c1d6bcaa 13px 15px,transparent 15px 21px),repeating-linear-gradient(90deg,transparent 0 8px,#28574766 8px 11px,transparent 11px 23px);mask-image:linear-gradient(90deg,#000,transparent)}
+.is-eroding .signal-noise{opacity:.7;animation:static-grain 220ms steps(2,end) infinite}
+@keyframes static-grain{0%{background-position:0 0,0 0}100%{background-position:17px 31px,-23px 9px}}
+@media(max-height:420px){.reminder-visual{padding:18px 24px 95px}.reminder-bell{display:none}#popup-title{font-size:24px;max-height:90px}.dismiss-control{bottom:24px}}
+body.reduce-motion .signal-noise{display:none}
+@media(prefers-reduced-motion:reduce){.signal-noise{display:none}}

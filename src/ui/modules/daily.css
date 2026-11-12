@@ -1,0 +1,81 @@
+.daily-date-controls .step-input input{width:118px;border:0;background:transparent;outline:none;padding:10px}
+.daily-date-controls .step-input:focus-within{outline:2px solid var(--forest);outline-offset:2px}
+.daily-date-controls{display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:20px 0}
+.daily-date-controls input{border:1px solid var(--line);
+  border-radius:10px;
+  background:var(--white);
+  padding:10px;
+  font:inherit;
+  font-size:12px;
+  color:var(--ink)}
+.daily-date-controls .icon-button{width:34px;
+  min-height:34px;
+  font-size:20px}
+.daily-date-controls .secondary{min-height:36px;
+  padding:8px 12px;
+  font-size:11px}
+.daily-toolbar{flex-wrap:wrap}
+.daily-toolbar .filters{flex-wrap:wrap}
+.daily-toolbar .filter{padding:8px 9px}
+.daily-row{display:flex;
+  align-items:center;
+  gap:12px;
+  padding:18px 0;
+  border-bottom:1px solid var(--line)}
+.daily-content{min-width:0;
+  flex:1}
+.daily-content h3{font-size:13px;
+  font-weight:600;
+  overflow-wrap:anywhere}
+.daily-content p{font-size:11px;
+  margin-top:6px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  line-height:1.7}
+.daily-content .task-meta{margin-top:8px}
+.daily-check{appearance:none;
+  flex:none;
+  width:20px;
+  height:20px;
+  border:1.5px solid #b9c8b0;
+  border-radius:7px;
+  background:var(--white);
+  cursor:pointer;
+  display:grid;
+  place-items:center}
+.daily-check:checked{background:var(--forest);
+  border-color:var(--forest)}
+.daily-check:checked:after{content:'✓';
+  font-size:13px;
+  color:white}
+.is-done .daily-content h3{text-decoration:line-through;
+  color:var(--muted)}
+.daily-status{border:1px solid var(--line);
+  background:var(--white);
+  border-radius:8px;
+  padding:8px 4px;
+  color:var(--ink);
+  font-size:10px;
+  max-width:105px}
+.priority{font-size:9px}
+.priority.high{color:#a15d38}
+.priority.high:before{content:'● ';
+  font-size:8px}
+.priority.low{color:var(--muted)}
+.overdue-label{color:#a15d38;
+  font-size:9px}
+#daily-count{font-size:11px;
+  color:var(--muted);
+  margin-top:20px}
+#dashboard-tasks .daily-row{padding:15px 0}
+#dashboard-tasks .daily-row:last-child{border:0}
+#dashboard-tasks .daily-content h3{font-size:12px}
+#dashboard-tasks .badge{flex-shrink:0}
+#daily-delete-dialog{width:420px}
+#daily-delete-description{margin-top:16px;
+  overflow-wrap:anywhere}
+
