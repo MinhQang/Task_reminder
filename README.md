@@ -43,7 +43,11 @@ Giao diện tiếng Việt với nền kem, xanh lá, chuyển động nhẹ và
 
 ## Cài đặt và sử dụng
 
-Bộ cài Windows x64 được tạo từ mã nguồn bằng hướng dẫn bên dưới. Kết quả là `dist/Task-Reminder-Setup-1.3.0.exe`, chứa đầy đủ runtime Electron; máy sử dụng **không cần cài Node.js, Python hay VS Code**.
+**[Tải bộ cài Task Reminder 1.3.0 cho Windows x64](https://github.com/MinhQang/Task_reminder/releases/download/v1.3.0/Task-Reminder-Setup-1.3.0.exe)**
+
+[Xem bản phát hành và mã SHA-256](https://github.com/MinhQang/Task_reminder/releases/tag/v1.3.0). Chỉ cần tải tệp Setup.exe để cài đặt.
+
+Bạn cũng có thể tự tạo bộ cài từ mã nguồn bằng hướng dẫn bên dưới. Kết quả là `dist/Task-Reminder-Setup-1.3.0.exe`, chứa đầy đủ runtime Electron; máy sử dụng **không cần cài Node.js, Python hay VS Code**.
 
 1. Chạy bộ cài và chọn thư mục cài đặt cho tài khoản Windows hiện tại.
 2. Mở **Task Reminder** từ Desktop hoặc Start Menu.
