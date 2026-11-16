@@ -1,10 +1,11 @@
-﻿const api = window.reminder;
+const api = window.reminder;
+if (api.nativeGlass) document.documentElement.classList.add('native-glass');
+if (api.compactPopup) document.documentElement.classList.add('compact-popup');
 const slider = document.querySelector('#dismiss-slider');
 const stage = document.querySelector('.popup-stage');
 const visual = document.querySelector('.reminder-visual');
 const dimmer = document.querySelector('.screen-dimmer');
 const control = document.querySelector('.dismiss-control');
-const noise = document.querySelector('.signal-noise');
 let entranceAnimation;
 let current, resolving = false, pointerActive = false, progress = 0, restoreFrame = 0, initialized = false, reduceMotion = false;
 const sounded = new Set();
@@ -16,21 +17,11 @@ function paint(value) {
   visual.style.opacity = '1';
   if (progress === 0) visual.style.clipPath = 'none';
   else if (progress === 1) visual.style.clipPath = 'inset(0 0 0 100%)';
-  else {
-    // A stepped, irregular boundary consumes pixels from left to right instead of fading them.
-    const points = ['100% 0%', '100% 100%'];
-    for (let row = 24; row >= 0; row--) {
-      const offset = reduceMotion ? 0 : (((row * 17 + Math.floor(progress * 40)) % 11) - 5) * 0.55;
-      const edge = Math.max(0, Math.min(100, progress * 100 + offset));
-      points.push(`${edge}% ${row / 24 * 100}%`);
-      if (row > 0) points.push(`${edge}% ${(row - 1) / 24 * 100}%`);
-    }
-    visual.style.clipPath = `polygon(${points.join(',')})`;
-  }
-  noise.style.left = `${progress * 100 - 2}%`;
-  visual.classList.toggle('is-eroding', progress > 0 && progress < 1 && !reduceMotion);
-  visual.style.transform = `translateX(${reduceMotion ? 0 : progress * 100}px)`;
+  else visual.style.clipPath = `inset(0 0 0 ${progress * 100}%)`;
+  
+  visual.style.transform = `translateX(${reduceMotion ? 0 : progress * 36}px)`;
   dimmer.style.opacity = String(1 - progress);
+  api.dismissProgress?.(progress);
   // Keep the rail in place while dragging, so the endpoint never moves away from the cursor.
   control.style.opacity = String(1 - Math.pow(progress, 4));
   control.style.setProperty('--slide-percent', `${progress * 100}%`);
@@ -50,6 +41,7 @@ function restore() {
 }
 async function refresh() {
   const state = await api.getState();
+  document.body.style.setProperty('--glass-opacity', String((100 - (state.settings.glassTransparency ?? 72)) / 100));
   reduceMotion = state.settings.reducedMotion || matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.body.classList.toggle('reduce-motion', reduceMotion);
   const previousId = current?.id;

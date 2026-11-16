@@ -7,6 +7,19 @@ const { createDailyService, validateDaily, dayKey } = require('../src/features/d
 const { createReminderService } = require('../src/features/reminders/service');
 const { summarize } = require('../src/features/dashboard/summary');
 const { collectDue, resolvePending } = require('../src/scheduler');
+test('idle reminder checks neither clone state nor commit; due reminders commit once', () => {
+  let commits = 0;
+  const state = { tasks: [{ id: 'future', enabled: true, nextDue: new Date(Date.now() + 60000).toISOString() }], pending: [] };
+  const service = createReminderService({ state, commit(change) { commits++; change(state); } });
+  state.uncloneable = () => {}; // Idle checks must not structuredClone the store.
+  assert.equal(service.check(), false);
+  assert.equal(commits, 0);
+  state.tasks[0].nextDue = new Date(Date.now() - 1000).toISOString();
+  assert.equal(service.check(), true);
+  assert.equal(service.check(), false);
+  assert.equal(commits, 1);
+  assert.equal(state.pending.length, 1);
+});
 function fixture(t) {
   const directory = fs.mkdtempSync(path.join(__dirname, '..', '.test-data', 'features-'));
   t.after(() => fs.rmSync(directory, { recursive: true, force: true }));

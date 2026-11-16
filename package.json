@@ -1,6 +1,6 @@
 {
   "name": "task-reminder",
-  "version": "1.3.0",
+  "version": "2.0.0",
   "description": "Ứng dụng nhắc việc cá nhân cho Windows",
   "author": "Task Reminder",
   "private": true,
@@ -12,7 +12,14 @@
     "test:browser": "node scripts/browser-test.js",
     "build": "electron-builder --win nsis --x64",
     "build:portable": "electron-builder --win portable --x64",
-    "test:features": "node scripts/features-ui-test.js"
+    "test:features": "node scripts/features-ui-test.js",
+    "build:ui": "node scripts/build-ui.cjs",
+    "prestart": "npm run build:ui",
+    "prebuild": "npm run build:ui",
+    "prebuild:portable": "npm run build:ui",
+    "pretest:ui": "npm run build:ui",
+    "pretest:features": "npm run build:ui",
+    "pretest:browser": "npm run build:ui"
   },
   "build": {
     "appId": "local.taskreminder.desktop",
@@ -22,6 +29,7 @@
     },
     "files": [
       "src/**/*",
+      "!src/ui/liquid-glass.entry.js",
       "package.json"
     ],
     "win": {
@@ -45,8 +53,10 @@
     }
   },
   "devDependencies": {
+    "@tomagranate/liquid-glass": "0.0.2",
     "electron": "^45.3.1",
     "electron-builder": "^26.18.0",
+    "esbuild": "0.28.2",
     "playwright": "^1.65.0"
   }
 }

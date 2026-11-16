@@ -31,9 +31,10 @@ function createReminderService(store) {
       return store.commit(state => resolvePending(state, id, action, new Date()));
     },
     check() {
-      const draft = structuredClone(store.state);
-      if (!collectDue(draft, new Date())) return false;
-      store.commit(state => { state.pending = draft.pending; }); return true;
+      const now = new Date();
+      const pending = new Set(store.state.pending.map(item => item.taskId));
+      if (!store.state.tasks.some(task => task.enabled && task.nextDue && new Date(task.nextDue) <= now && !pending.has(task.id))) return false;
+      store.commit(state => collectDue(state, now)); return true;
     }
   };
 }

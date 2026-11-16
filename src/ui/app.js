@@ -1,3 +1,5 @@
+let windowActive = true;
+if (api.nativeGlass) document.documentElement.classList.add('native-glass');
 function render() {
   $('#total-count').textContent = state.tasks.length;
   $('#today-count').textContent = state.tasks.filter(t => t.enabled && today(t)).length;
@@ -25,8 +27,13 @@ $('#preview').onclick = () => attempt(() => api.preview());
 $('#close').onclick = () => api.close(); $('#minimize').onclick = () => api.minimize();
 function tickClock() { const now = new Date(); $('#clock').textContent = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }); $('#date-label').textContent = now.toLocaleDateString('vi-VN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); }
 let calendarDay = '';
-tickClock(); setInterval(() => { tickClock(); const day = new Date().toDateString(); if (calendarDay && day !== calendarDay) attempt(refresh); calendarDay = day; }, 1000); api.onChange(() => attempt(refresh)); attempt(refresh);
+tickClock(); setInterval(() => { if (!windowActive || document.hidden) return; tickClock(); const day = new Date().toDateString(); if (calendarDay && day !== calendarDay) attempt(refresh); calendarDay = day; }, 15000);
+api.onChange(() => { if (windowActive && !document.hidden) attempt(refresh); });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { tickClock(); attempt(refresh); } });
+attempt(refresh);
 
-api.onHide?.(() => uiMotion.hideWindow());
-api.onShow?.(() => uiMotion.enter(document.querySelector('.app-shell')));
+api.onHide?.(() => { windowActive = false; uiMotion.hideWindow(); });
+api.onShow?.(() => { windowActive = true; tickClock(); attempt(refresh); uiMotion.enter(document.querySelector('.app-shell')); });
 uiMotion.enter(document.querySelector('.app-shell'));
+$('#glass-transparency').oninput = e => { document.body.style.setProperty('--glass-opacity', String((100 - Number(e.target.value)) / 100)); $('#glass-transparency-value').textContent = `${e.target.value}%`; };
+$('#glass-transparency').onchange = e => attempt(async () => { await api.settings({ glassTransparency: Number(e.target.value) }); await refresh(); });

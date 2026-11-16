@@ -1,4 +1,5 @@
 const { _electron: electron } = require('playwright');
+const { waitForPopup, waitForMain } = require('./electron-helpers.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -12,7 +13,7 @@ async function launch() {
   const env = { ...process.env, REMINDER_TEST_ID: id };
   delete env.ELECTRON_RUN_AS_NODE;
   const app = await electron.launch({ args: [root, '--test-mode'], env, timeout: 30000 });
-  const page = await app.firstWindow();
+  const page = await waitForMain(app);
   page.on('pageerror', e => errors.push(e.message));
   await page.waitForSelector('#dashboard-view:not([hidden])');
   await page.click('[data-view="all"]');
@@ -40,7 +41,7 @@ async function launch() {
     await page.click('[data-filter="all"]'); await page.fill('#search', 'Đọc vài'); assert.equal(await page.locator('.task-row').count(), 1); await page.fill('#search', '');
     await page.click('[data-view="settings"]'); await page.uncheck('#sound'); await page.screenshot({ path: path.join(shots, '04-settings.png') });
     await page.click('[data-view="all"]');
-    const popupPromise = app.waitForEvent('window'); await page.click('#preview'); const popup = await popupPromise; await popup.waitForSelector('#popup-title'); await popup.waitForTimeout(180); await popup.screenshot({ path: path.join(shots, '05-popup.png') }); await popup.locator('#dismiss-slider').focus(); await popup.keyboard.press('End');
+    await page.click('#preview'); const popup = await waitForPopup(app); await popup.waitForSelector('#popup-title'); await popup.waitForTimeout(180); await popup.screenshot({ path: path.join(shots, '05-popup.png') }); await popup.locator('#dismiss-slider').focus(); await popup.keyboard.press('End');
     await page.locator('[data-delete]').first().click(); await page.click('#delete-confirm'); await page.waitForFunction(() => document.querySelectorAll('.task-row').length === 2);
     await app.close(); app = null;
     // Simulate a powered-off machine by placing a scheduled occurrence in the past on disk.

@@ -6,7 +6,7 @@
 
 Ứng dụng Windows giúp bạn quản lý công việc hằng ngày, theo dõi tiến độ và nhận lời nhắc đúng lúc — ngay trên máy tính của mình.
 
-![Version](https://img.shields.io/badge/version-1.3.0-285747)
+![Version](https://img.shields.io/badge/version-2.0.0-285747)
 ![Platform](https://img.shields.io/badge/platform-Windows%20x64-0078D4)
 ![Electron](https://img.shields.io/badge/built%20with-Electron-47848F)
 ![Local data](https://img.shields.io/badge/data-local%20only-285747)
@@ -14,6 +14,14 @@
 </div>
 
 ![Dashboard của Task Reminder](design-previews/12-dashboard.png)
+
+## Liquid Glass 2.0
+
+Toàn bộ dashboard, công việc, lịch nhắc, biểu mẫu, cài đặt và popup dùng giao diện kính mới. Trên Windows 11 22H2 trở lên, Acrylic làm mờ **desktop thật phía sau cửa sổ**, kết hợp thư viện [@tomagranate/liquid-glass](https://github.com/tomagranate/liquid-glass) cho viền và khúc xạ. Có thanh **Độ trong của lớp kính** (mặc định 72%) trong Cài đặt; vùng nhập liệu giữ nền rõ để dễ đọc. Máy không hỗ trợ Acrylic dùng nền màu đơn. Không dùng wallpaper.
+
+Icon checkbox kính xanh dương–trắng có nhiều kích thước cho Windows. Hiệu ứng ngắn, tránh blur chồng; khúc xạ giới hạn ở viền, cửa sổ ẩn ngừng cập nhật UI và kiểm tra lịch không sao chép dữ liệu khi chưa đến hạn.
+
+Bản này sửa lỗi nâng cấp từ portable: bộ cài cũ chỉ tìm app trong thư mục cài, để bản portable ở nơi khác giữ khóa một phiên. Bộ cài mới phát hiện app trong phiên Windows hiện tại, hỏi đóng bản cũ và sao lưu dữ liệu trước khi nâng cấp. Cài đặt hiển thị phiên bản, đường dẫn chương trình và mã build; khi một bản khác giữ khóa, app thông báo thay vì âm thầm mở lại giao diện cũ.
 
 ## Bạn có thể làm gì?
 
@@ -29,7 +37,7 @@ Lịch nhắc **một lần** tự xóa sau khi người dùng tắt popup, như
 
 ## Giao diện
 
-Giao diện tiếng Việt với nền kem, xanh lá, chuyển động nhẹ và tùy chọn giảm chuyển động.
+Giao diện tiếng Việt với kính trong, nền desktop mờ, nút bo tròn và chuyển động nhẹ. Có tùy chọn giảm chuyển động và chỉnh độ trong của kính.
 
 ### Quản lý công việc
 
@@ -43,11 +51,11 @@ Giao diện tiếng Việt với nền kem, xanh lá, chuyển động nhẹ và
 
 ## Cài đặt và sử dụng
 
-**[Tải bộ cài Task Reminder 1.3.0 cho Windows x64](https://github.com/MinhQang/Task_reminder/releases/download/v1.3.0/Task-Reminder-Setup-1.3.0.exe)**
+**[Tải bộ cài Task Reminder 2.0.0 cho Windows x64](https://github.com/MinhQang/Task_reminder/releases/download/v2.0.0/Task-Reminder-Setup-2.0.0.exe)**
 
-[Xem bản phát hành và mã SHA-256](https://github.com/MinhQang/Task_reminder/releases/tag/v1.3.0). Chỉ cần tải tệp Setup.exe để cài đặt.
+[Xem bản phát hành và mã SHA-256](https://github.com/MinhQang/Task_reminder/releases/tag/v2.0.0). Chỉ cần tải tệp Setup.exe để cài đặt.
 
-Bạn cũng có thể tự tạo bộ cài từ mã nguồn bằng hướng dẫn bên dưới. Kết quả là `dist/Task-Reminder-Setup-1.3.0.exe`, chứa đầy đủ runtime Electron; máy sử dụng **không cần cài Node.js, Python hay VS Code**.
+Bạn cũng có thể tự tạo bộ cài từ mã nguồn bằng hướng dẫn bên dưới. Kết quả là `dist/Task-Reminder-Setup-2.0.0.exe`, chứa đầy đủ runtime Electron; máy sử dụng **không cần cài Node.js, Python hay VS Code**.
 
 1. Chạy bộ cài và chọn thư mục cài đặt cho tài khoản Windows hiện tại.
 2. Mở **Task Reminder** từ Desktop hoặc Start Menu.
@@ -94,9 +102,9 @@ npm.cmd run test:ui
 npm.cmd run test:features
 ```
 
-Dự án có 18 kiểm thử đơn vị, kiểm thử giao diện Electron và kiểm tra runtime trích từ bộ cài. Kiểm thử Chrome dùng Chrome cài trên máy; kiểm tra Windows Task Scheduler tạo lịch thử riêng rồi dọn sau khi hoàn tất.
+Dự án có 19 kiểm thử đơn vị, kiểm thử giao diện Electron và kiểm tra runtime trích từ bộ cài. Kiểm thử Chrome dùng Chrome cài trên máy; kiểm tra Windows Task Scheduler tạo lịch thử riêng rồi dọn sau khi hoàn tất.
 
-Đã kiểm tra trên máy Windows phát triển, gồm chạy payload bộ cài ở đường dẫn khác có dấu tiếng Việt với PATH chỉ chứa Windows. Chưa kiểm tra trên máy vật lý thứ hai hoặc chu kỳ cài/gỡ đầy đủ. Xem [hướng dẫn phát triển và các kiểm tra bổ sung](docs/DEVELOPMENT.md).
+Đã kiểm tra trên máy Windows phát triển, gồm chạy payload bộ cài ở đường dẫn khác có dấu tiếng Việt với PATH chỉ chứa Windows. Chưa kiểm tra trên máy vật lý thứ hai. Xem [hướng dẫn phát triển và các kiểm tra bổ sung](docs/DEVELOPMENT.md).
 
 ## Kiến trúc
 
@@ -120,6 +128,11 @@ src/
 ## Góp ý
 
 Bạn có thể [báo lỗi hoặc đề xuất tính năng](https://github.com/MinhQang/Task_reminder/issues). Khi báo lỗi, hãy mô tả bước thực hiện, kết quả mong muốn và phiên bản Windows; tránh đính kèm tệp dữ liệu cá nhân.
+
+## Thư viện và tham khảo thiết kế
+
+- [Liquid Glass — Tomagranate](https://github.com/tomagranate/liquid-glass), MIT, phiên bản 0.0.2; được đóng gói cục bộ để dùng offline.
+- [Electron Acrylic](https://www.electronjs.org/docs/latest/api/browser-window#winsetbackgroundmaterialmaterial-windows) cho vật liệu nền Windows.
 
 ## Tham khảo thiết kế
 

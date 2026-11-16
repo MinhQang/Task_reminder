@@ -12,13 +12,19 @@ function schedule(task) {
 function toast(message) { $('#toast').textContent = message; $('#toast').hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => $('#toast').hidden = true, 4200); }
 async function attempt(fn) { try { await fn(); } catch (e) { toast(e.message.replace(/^Error invoking remote method '[^']+': Error: /, '')); } }
 function today(task) { return task.nextDue && new Date(task.nextDue).toDateString() === new Date().toDateString(); }
-let refreshSequence = 0;
-async function refresh() {
-  const sequence = ++refreshSequence;
-  const next = await api.getState();
-  if (sequence !== refreshSequence) return;
-  state = next;
-  document.body.classList.toggle('reduce-motion', state.settings.reducedMotion);
-  render();
+let refreshPending, refreshAgain = false;
+function refresh() {
+  refreshAgain = true;
+  if (refreshPending) return refreshPending;
+  refreshPending = (async () => {
+    do {
+      refreshAgain = false;
+      state = await api.getState();
+      document.body.style.setProperty('--glass-opacity', String((100 - (state.settings.glassTransparency ?? 72)) / 100));
+      document.body.classList.toggle('reduce-motion', state.settings.reducedMotion);
+    } while (refreshAgain);
+    render();
+  })().finally(() => { refreshPending = null; });
+  return refreshPending;
 }
 function empty(title, description, add = false) { return `<div class="empty-state"><div class="empty-icon">${icon('bell')}</div><h3>${title}</h3><p>${description}</p>${add ? '<button class="primary" id="empty-add">' + icon('plus') + ' Tạo nhắc nhở đầu tiên</button>' : ''}</div>`; }

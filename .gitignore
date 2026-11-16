@@ -19,3 +19,4 @@ design-previews/cleanup-report.json
 *.key
 Thumbs.db
 Desktop.ini
+src/build-info.json

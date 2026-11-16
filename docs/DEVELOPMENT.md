@@ -1,10 +1,10 @@
-﻿# Task Reminder 1.3
+﻿# Task Reminder 2.0
 
 Ứng dụng quản lý công việc và nhắc việc cho Windows x64, dữ liệu lưu cục bộ.
 
 ## Bộ cài hoàn chỉnh
 
-Gửi duy nhất `dist/Task-Reminder-Setup-1.3.0.exe` cho người dùng. Bộ cài chứa đầy đủ Electron, giao diện, tài nguyên và trình gỡ cài đặt; máy nhận không cần Node.js, npm, Python, VS Code hay kết nối mạng để cài/chạy.
+Gửi duy nhất `dist/Task-Reminder-Setup-2.0.0.exe` cho người dùng. Bộ cài chứa đầy đủ Electron, giao diện, tài nguyên và trình gỡ cài đặt; máy nhận không cần Node.js, npm, Python, VS Code hay kết nối mạng để cài/chạy.
 
 Chạy bộ cài, chọn thư mục, hoàn tất và mở Task Reminder từ Start Menu hoặc Desktop. Cài cho tài khoản Windows hiện tại, không yêu cầu quyền quản trị. Nếu bản portable/bản cũ đang chạy, thoát từ khay hệ thống trước khi chuyển sang bản đã cài. Đường dẫn chương trình mới sẽ được đăng ký lại khi mở app.
 
@@ -66,8 +66,16 @@ node scripts/verify-installer.cjs
 node scripts/demo-app.cjs
 ```
 
-18 kiểm thử đơn vị; các bài kiểm tra Chrome, Electron thật, lịch Windows thật và payload bộ cài đều có báo cáo trong `design-previews/`. `verify-installer.cjs` kiểm tra toàn vẹn archive, đối chiếu mã đóng gói, giải nén runtime từ bộ cài sang đường dẫn Unicode riêng và chạy app với PATH chỉ chứa Windows. Bài kiểm tra không cài đè/gỡ bản app thật trên máy hiện tại.
+19 kiểm thử đơn vị; các bài kiểm tra Chrome, Electron thật, lịch Windows thật và payload bộ cài đều có báo cáo trong `design-previews/`. `verify-installer.cjs` kiểm tra toàn vẹn archive, đối chiếu mã đóng gói, giải nén runtime từ bộ cài sang đường dẫn Unicode riêng và chạy app với PATH chỉ chứa Windows. Bài kiểm tra không cài đè/gỡ bản app thật trên máy hiện tại.
 
 Đã kiểm tra payload trên máy Windows hiện tại; chưa kiểm tra trên máy vật lý thứ hai, chu kỳ cài/gỡ đầy đủ, tắt nguồn vật lý hoặc đăng xuất/đăng nhập thực. Kết quả có giới hạn này, không phải bảo đảm mọi cấu hình/chính sách Windows đều giống nhau.
 
 Ảnh, báo cáo kiểm tra và ghi chú thiết kế ở `design-previews/`; repo skill tham khảo ở `design-references/`. Những thư mục này không nằm trong bộ cài.
+
+## Giao diện 2.0
+
+Acrylic native trên Windows 11 22H2+, nền màu đơn khi không hỗ trợ; không có wallpaper giả. Thư viện Liquid Glass được bundle offline, chỉ khúc xạ trên vùng viền nhỏ. Icon vector tại `src/assets/icon.svg`; chạy `node scripts/create-icon.cjs` để tạo PNG và ICO 8 kích thước (cần Chrome hoặc `CHROME_PATH`).
+
+Hiệu năng: bỏ qua clone/ghi JSON khi chưa có lịch đến hạn; gộp refresh đang chờ; cửa sổ ẩn ngừng cập nhật UI; tránh blur chồng lên DWM và bỏ chromatic filter. Chạy `node scripts/performance-test.cjs dist/win-unpacked` để đo trên máy hiện tại; số đo phụ thuộc GPU, màn hình và tải máy.
+
+Đã thử cài nâng cấp thực tế lên 2.0.0, đối chiếu mã build và icon trong bản cài; dữ liệu người dùng giữ nguyên từng byte ngay sau nâng cấp. Windows Task Scheduler trỏ về bản đã cài. Chưa thử gỡ cài đặt đầy đủ hoặc máy vật lý thứ hai.

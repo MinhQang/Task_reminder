@@ -66,7 +66,7 @@ fs.mkdirSync(shots, { recursive: true });
     await popup.mouse.move(bounds.x + 13, y); await popup.mouse.down(); await popup.mouse.move(bounds.x + bounds.width / 2, y, { steps: 8 });
     const duringDrag = await popup.locator('.reminder-visual').evaluate(el => ({ opacity: +getComputedStyle(el).opacity, transform: getComputedStyle(el).transform, clip: getComputedStyle(el).clipPath }));
     assert.equal(duringDrag.opacity, 1, 'erosion keeps remaining pixels solid instead of fading');
-    assert.ok(duringDrag.clip.startsWith('polygon(') && duringDrag.clip.includes('50'), 'half drag consumes the left half with an irregular mask');
+    assert.ok(duringDrag.clip.startsWith('inset(') && duringDrag.clip.includes('50'), 'half drag smoothly reveals the left half');
     const railCenter = await popup.locator('.dismiss-rail').evaluate(el => el.getBoundingClientRect().x + el.getBoundingClientRect().width / 2);
     const panelCenter = await popup.locator('.popup-main').evaluate(el => el.getBoundingClientRect().x + el.getBoundingClientRect().width / 2);
     assert.ok(Math.abs(railCenter - panelCenter) < 1, 'slider is centered under popup');

@@ -1,4 +1,5 @@
 const { _electron: electron } = require('playwright');
+const { waitForMain, dismissPopup } = require('./electron-helpers.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -9,7 +10,7 @@ const day = (offset = 0) => { const d = new Date(); d.setDate(d.getDate() + offs
 async function launch() {
   const env = { ...process.env }; delete env.ELECTRON_RUN_AS_NODE;
   const app = await electron.launch({ args: [root, '--test-mode', `--test-profile=${profile}`], env, timeout: 30000 });
-  const page = await app.firstWindow(); page.on('pageerror', e => errors.push(e.message));
+  const page = await waitForMain(app); page.on('pageerror', e => errors.push(e.message));
   await page.waitForSelector('#dashboard-progress-note');
   await page.waitForFunction(() => document.querySelector('#dashboard-progress-note').textContent.length > 0);
   return { app, page };
@@ -78,8 +79,7 @@ async function create(page, title, date, priority, status = 'todo') {
     for (let i = 0; i < 50; i++) { popup = app.windows().find(w => w.url().endsWith('popup.html')); if (popup) break; await page.waitForTimeout(100); }
     assert.ok(popup); popup.on('pageerror', e => errors.push(e.message));
     await popup.waitForSelector('#dismiss-slider'); await popup.waitForTimeout(180);
-    const popupClosed = popup.waitForEvent('close');
-    await popup.locator('#dismiss-slider').focus(); await popup.keyboard.press('End'); await popupClosed;
+    await dismissPopup(popup);
     const final = await state(page);
     assert.ok(final.history.some(item => item.taskId === 'one-time-test' && item.action === 'done'), JSON.stringify(final.history));
     assert.equal(final.tasks.length, 2);

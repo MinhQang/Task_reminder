@@ -1,0 +1,21 @@
+html,body.popup-body{background:transparent}
+.screen-dimmer{background:rgba(16,28,48,.5);backdrop-filter:blur(3px)}
+.popup-main{height:min(460px,calc(100vh - 32px));width:min(650px,calc(100vw - 40px))}
+.reminder-visual{border-radius:40px;background:linear-gradient(135deg,#f4faffd9,#e0ebffd6 50%,#ebe4ffd4);backdrop-filter:blur(30px) saturate(1.4);border:1px solid #ffffffed;box-shadow:0 30px 100px #0f234366,inset 0 2px 2px #fff;isolation:isolate;padding:30px 36px 140px}
+.reminder-visual .glass-optics{opacity:.5}.reminder-bell{width:60px;height:60px;border-radius:21px;color:#fff;background:linear-gradient(150deg,#72ccff,#3781f4);border:1px solid #ffffffdf;box-shadow:0 7px 25px #2c86f32b,inset 0 1px 2px #fff9;margin-bottom:20px}
+.reminder-eyebrow{color:#5878a0;letter-spacing:1.8px;font-size:9px}#popup-title{font-size:31px;color:#254262;letter-spacing:-.8px;max-height:126px}#popup-note{color:#577496;font-size:13px}#missed-note{color:#92734c}
+.dismiss-control{width:310px;max-width:78%;bottom:39px;background:#ffffff94;backdrop-filter:blur(20px);border:1px solid #ffffffed;border-radius:100px;padding:7px 18px 11px;box-shadow:0 8px 24px #335c9917,inset 0 1px 2px #fff}
+.dismiss-rail{height:38px;gap:0}.dismiss-rail::before{height:5px;top:calc(50% - 2.5px);background:linear-gradient(90deg,#55a9ff var(--slide-percent,0%),#b1c9e966 var(--slide-percent,0%))}.rail-star{fill:none;stroke:#5d87b6;stroke-width:1.7;width:13px;height:13px;opacity:.75}
+#dismiss-slider{height:38px}#dismiss-slider::-webkit-slider-thumb{background:linear-gradient(#fff,#edf7ff);border:1px solid #fff;width:28px;height:28px;margin-top:-11px;box-shadow:0 3px 8px #325c9940,inset 0 1px 2px #fff}#dismiss-slider:hover::-webkit-slider-thumb{box-shadow:0 3px 10px #4e7ab247,0 0 0 4px #fff8}#slider-hint{font-size:10px;color:#6484a7;letter-spacing:.1px;margin-top:3px}.signal-noise{display:none!important}
+@media(max-height:420px){.reminder-visual{padding:20px 24px 116px}.dismiss-control{bottom:22px}#popup-title{font-size:25px}}
+.native-glass body.popup-body{background:rgba(237,244,252,.12)}
+.compact-popup .popup-stage{position:fixed;inset:0}
+.compact-popup .popup-main{width:100vw;height:100vh}
+.compact-popup .screen-dimmer{display:none}
+.compact-popup .reminder-visual{border-radius:12px;background:rgba(242,248,255,.3);backdrop-filter:none;box-shadow:inset 0 1px 2px #fff,inset 0 -1px 1px #ffffff90}
+.compact-popup .reminder-visual .glass-optics{opacity:.07}
+.native-glass body.popup-body{background:rgb(237 244 252 / calc(var(--glass-opacity,.28) * .2))}
+.compact-popup .reminder-visual{background:rgb(242 248 255 / var(--glass-opacity,.28))}
+.compact-popup .dismiss-control{backdrop-filter:none}
+.reminder-bell{background:transparent url('../assets/icon.svg') center/contain no-repeat;border:0;box-shadow:none;border-radius:0}
+.reminder-bell svg{display:none}

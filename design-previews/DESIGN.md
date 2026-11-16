@@ -48,3 +48,9 @@ Công việc có checkbox hoàn thành, trạng thái đang làm, ghi chú, ưu 
 Bỏ hiệu ứng nhiễu mở kéo dài 2 giây; nội dung popup hiện ngay với chuyển động nhẹ 140 ms. Module `motion.js` quản lý mở/đóng hộp thoại, chuyển tab 160 ms và thu cửa sổ về tray. Kéo để tắt vẫn ăn mòn theo hướng kéo và hoàn tác nếu thả sớm. Giảm chuyển động vẫn được hỗ trợ.
 
 Bộ cài NSIS chứa đầy đủ runtime, icon/metadata Task Reminder và phần dọn lịch Windows khi gỡ cài đặt. `installer-verification.json` ghi nhận kiểm tra chính payload giải nén từ bộ cài ở đường dẫn Unicode mới; `packaged-verification.json` ghi nhận thử motion, popup tức thời và đóng/mở lại cửa sổ với PATH chỉ chứa Windows.
+
+## 2.0 — Liquid Glass
+
+Kính nền desktop thật bằng Windows Acrylic, độ trong điều chỉnh 20–85%, không dùng wallpaper. Fallback là màu đơn. Popup và cửa sổ quản lý dùng cùng bảng màu. Icon checkbox có khối kính bo tròn, hai lớp tròn và dấu check trắng; không dùng xanh lá.
+
+Thư viện @tomagranate/liquid-glass 0.0.2 đóng gói offline, DPR 1, không chromatic blur, khúc xạ giới hạn ở viền cao 64 px trên native. Chuyển động 110–160 ms, thanh kéo phục hồi 300 ms; không có thời gian chờ 2 giây.

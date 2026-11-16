@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="base" x2=".85" y2="1"><stop stop-color="#b9d9ff" stop-opacity=".85"/><stop offset=".48" stop-color="#8babff" stop-opacity=".7"/><stop offset="1" stop-color="#7395ff" stop-opacity=".9"/></linearGradient>
+    <linearGradient id="edge" x2=".4" y2="1"><stop stop-color="#ffffff" stop-opacity=".95"/><stop offset="1" stop-color="#bddbff" stop-opacity=".25"/></linearGradient>
+    <linearGradient id="shine" x2=".5" y2="1"><stop stop-color="#ffffff" stop-opacity=".5"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+  </defs>
+  <rect x="12" y="12" width="232" height="232" rx="60" fill="url(#base)"/>
+  <rect x="15" y="15" width="226" height="226" rx="57" fill="none" stroke="url(#edge)" stroke-width="3"/>
+  <path d="M29 95V70a41 41 0 0 1 41-41h116a41 41 0 0 1 41 41v10C163 67 103 126 29 95Z" fill="url(#shine)"/>
+  <circle cx="128" cy="128" r="91" fill="#d3e2ff" fill-opacity=".28" stroke="url(#edge)" stroke-width="2"/>
+  <circle cx="128" cy="128" r="70" fill="#e5eaff" fill-opacity=".47" stroke="url(#edge)" stroke-width="2"/>
+  <circle cx="128" cy="128" r="68" fill="url(#shine)"/>
+  <path d="m102 130 29 30 77-83" fill="none" stroke="#a5b8ed" stroke-opacity=".42" stroke-width="28" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 3)"/>
+  <path d="m102 126 29 30 77-83" fill="none" stroke="#f3f7ff" stroke-opacity=".9" stroke-width="27" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="m102 122 29 30 77-83" fill="none" stroke="#fff" stroke-opacity=".4" stroke-width="21" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

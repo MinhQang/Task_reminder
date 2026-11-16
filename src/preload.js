@@ -1,5 +1,8 @@
 const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('reminder', {
+  nativeGlass: process.argv.includes('--native-glass'),
+  compactPopup: process.argv.includes('--compact-popup'),
+  dismissProgress: value => ipcRenderer.send('dismiss-progress', value),
   getState: () => ipcRenderer.invoke('state'),
   saveDaily: data => ipcRenderer.invoke('save-daily', data),
   setDailyStatus: (id, status) => ipcRenderer.invoke('daily-status', id, status),

@@ -2,7 +2,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 function initialState() {
-  return { version: 1, tasks: [], dailyTasks: [], pending: [], history: [], settings: { autoStart: true, notifyWhenClosed: true, sound: true, reducedMotion: false } };
+  return { version: 1, tasks: [], dailyTasks: [], pending: [], history: [], settings: { autoStart: true, notifyWhenClosed: true, sound: true, reducedMotion: false, glassTransparency: 72 } };
 }
 function migrate(data) {
   if (data.version !== 1 || !['tasks', 'pending', 'history'].every(key => Array.isArray(data[key])) || (data.dailyTasks !== undefined && !Array.isArray(data.dailyTasks))) throw Error('Định dạng dữ liệu không hợp lệ');

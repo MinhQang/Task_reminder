@@ -13,6 +13,10 @@ function registerFeatureIPC(ipc, { store, reminders, daily, snapshot, configureL
   ipc.handle('settings', (_event, data) => {
     try {
       store.commit(state => {
+        if (data.glassTransparency !== undefined) {
+          if (!Number.isInteger(data.glassTransparency) || data.glassTransparency < 20 || data.glassTransparency > 85) throw Error('Độ trong của kính phải từ 20 đến 85.');
+          state.settings.glassTransparency = data.glassTransparency;
+        }
         for (const key of ['autoStart', 'notifyWhenClosed', 'sound', 'reducedMotion']) if (typeof data[key] === 'boolean') state.settings[key] = data[key];
         configureLogin();
       });
